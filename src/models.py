@@ -27,16 +27,8 @@ class Character(Base):
      Id = Column(Integer, primary_key = True)
      Name = Column(String(50), nullable = False)
      Description = Column(String(250))
+     Planets = relationship(Planets)
 
-class Favourites(Base):
-     __tablename__ = 'favourites'
-     Id = Column(Integer, primary_key = True)
-     user_id = Column(Integer, ForeignKey('user.id'))
-     Character_id = Column(Integer, ForeignKey('character.id'), nullable=True)
-     Planet_id = Column(Integer, ForeignKey('planet.id'), nullable=True)
-     User = relationship(User, secundary='User')
-     Character = relationship(Character, secundary='Character')
-     Planet = relationship("Planet", secundary='Planet')
     
 class Planets(Base):
      __tablename__ = 'planets'
@@ -44,8 +36,18 @@ class Planets(Base):
      Name = Column(String(50), nullable = False)
      Climate = Column(String(50))
      Terrain = Column(String(50))
-     Favourites = relationship(Favourites, secundary='Favourites')
-     Character = relationship(Character, secundary='Character')
+     Favourites = relationship(Favourites, secondary='Favourites')
+     Character = relationship(Character, secondary='Character')
 
+class Favourites(Base):
+     __tablename__ = 'favourites'
+     Id = Column(Integer, primary_key = True)
+     user_id = Column(Integer, ForeignKey('user.id'))
+     Character_id = Column(Integer, ForeignKey('character.id'), nullable=True)
+     Planet_id = Column(Integer, ForeignKey('planet.id'), nullable=True)
+     User = relationship(User, secondary='User')
+     Character = relationship(Character, secondary='Character')
+     Planet = relationship("Planet", secondary='Planet')
+    
 ## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
